@@ -22,7 +22,7 @@ trait AmountTrait
     {
         $value = parent::getAttributeValue($key);
         if (in_array($key, $this->getAmountFields())) {
-            $value = bcdiv($value,$this->getAmountTimes($key));
+            $value = bcdiv($value,$this->getAmountTimes($key),2);
         }
 
         return $value;
