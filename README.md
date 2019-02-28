@@ -46,16 +46,19 @@ public function getAttributeValue($key)
 {
     $value = parent::getAttributeValue($key);
     if (in_array($key, $this->getAmountFields())) {
-        $value = $value / $this->getAmountTimes($key);
+        $value = bcdiv($value,$this->getAmountTimes($key),2);
     }
-
     return $value;
 }
 
 public function setAttribute($key, $value)
 {
     if (in_array($key, $this->getAmountFields())) {
-        $value = (int) round($value * $this->getAmountTimes($key));
+        if (function_exists('bcmul')) {
+            $value = bcmul($value, $this->getAmountTimes($key));
+        } else {
+            $value = round($value * $this->getAmountTimes($key));
+        }
     }
     parent::setAttribute($key, $value);
 }
